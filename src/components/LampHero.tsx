@@ -1,5 +1,5 @@
-import { useEffect, useState, type CSSProperties } from "react";
-import { ArrowDown, ArrowRight, ArrowCounterClockwise } from "@phosphor-icons/react";
+import { useEffect, type CSSProperties } from "react";
+import { ArrowRight, ArrowCounterClockwise } from "@phosphor-icons/react";
 
 const starOpacity = [0.012, 0.13, 0.29, 0.47, 0.72];
 const stars = (() => {
@@ -27,8 +27,7 @@ const explanations = [
   ["Unneeded light is off during quiet hours. The stars remain illustrative.", "تنطفئ الإنارة غير الضرورية في ساعات الخمول. النجوم هنا توضيحية."],
 ];
 
-export function LampHero({ ar, onNext }: { ar: boolean; onNext: () => void }) {
-  const [stage, setStage] = useState(0);
+export function LampHero({ ar, onNext, stage, onStageChange }: { ar: boolean; onNext: () => void; stage: number; onStageChange: (stage: number) => void }) {
   const t = (en: string, arabic: string) => (ar ? arabic : en);
 
   useEffect(() => {
@@ -69,22 +68,17 @@ export function LampHero({ ar, onNext }: { ar: boolean; onNext: () => void }) {
           <br />
           <em>{t("Give the sky room.", "اعرف أين تنظر.")}</em>
         </h2>
-        <p>{t("Try four responsible lighting choices. Watch the illustration change, then explore the real evidence and power calculation below.", "غيّر الإنارة، ثم اعرف أقرب موقع ووقت واتجاه لمحاولة رؤية الهلال بنفسك.")}</p>
-        <button className="button primary" onClick={onNext}>
-          {t("Explore the evidence", "خطط لرصد الهلال")}
-          <ArrowRight size={20} />
-        </button>
+        <p>{t("Try four changes to the same light. See how each one changes the night in this illustration.", "جرّب أربع تغييرات على الضوء وشاهد أثرها التوضيحي على الليل.")}</p>
       </div>
       <div className="lamp-hero-meteor" aria-hidden="true" />
       <div className="lamp-hero-experience">
         <div className="lamp-hero-caption">
           <small>{t("ILLUSTRATIVE SCENE / KUWAIT WATERFRONT", "المشهد / 01")}</small>
-          <h2>{t("Light for the ground. Room for the sky.", "ضوءٌ للأرض. ومساحةٌ للسماء.")}</h2>
         </div>
         <div className="lamp-hero-controls">
           <div className="lamp-hero-controls-head">
             <span>{t("Try four lighting choices", "جرّب أربع قرارات")}</span>
-            <button onClick={() => setStage(0)}>
+            <button onClick={() => onStageChange(0)}>
               {t("Reset", "إعادة المشهد")} <ArrowCounterClockwise size={15} />
             </button>
           </div>
@@ -94,20 +88,19 @@ export function LampHero({ ar, onNext }: { ar: boolean; onNext: () => void }) {
                 key={en}
                 className={stage === i + 1 ? "active" : stage > i + 1 ? "completed" : ""}
                 aria-pressed={stage === i + 1}
-                onClick={() => setStage(i + 1)}
+                onClick={() => onStageChange(i + 1)}
               >
                 <small>{String(i + 1).padStart(2, "0")}</small>
                 {t(en, arabic)}
               </button>
             ))}
           </div>
-          <p aria-live="polite">{t(...(explanations[stage] as [string, string]))}</p>
+          <div className="lamp-hero-controls-footer">
+            <p aria-live="polite">{t(...(explanations[stage] as [string, string]))}</p>
+            <button onClick={onNext}>{t("Explore evidence", "استكشف الدليل")} <ArrowRight size={16} /></button>
+          </div>
         </div>
       </div>
-      <button className="lamp-hero-next" onClick={onNext}>
-        {t("EXPLORE THE EVIDENCE", "سؤال الهلال")}
-        <ArrowDown size={17} />
-      </button>
     </section>
   );
 }
