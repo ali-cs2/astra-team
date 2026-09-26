@@ -1,0 +1,34 @@
+{
+  "source": "NASA GIBS / VIIRS Black Marble",
+  "years": [
+    2012,
+    2016
+  ],
+  "bounds": [
+    57.2,
+    22.7,
+    59.6,
+    24.1
+  ],
+  "projection": "Web Mercator",
+  "nativeZoom": 8,
+  "description": "Display imagery only, not calibrated radiance or ground sky brightness.",
+  "sourceUrl": "https://science.nasa.gov/earth/earth-observatory/earth-at-night/maps/",
+  "tileTemplate": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_Black_Marble/default/{year}-01-01/GoogleMapsCompatible_Level8/{z}/{y}/{x}.png",
+  "retrievedAt": "2026-09-26T09:14:04.525490+00:00",
+  "comparison": {
+    "bounds": [
+      55.5,
+      22.4,
+      60.5,
+      24.0
+    ],
+    "projection": "Web Mercator",
+    "nativeZoom": 8,
+    "files": [
+      "northern-oman-2012.webp",
+      "northern-oman-2016.webp"
+    ],
+    "description": "Wider northern Oman region, identical bounds and dimensions in both years. Original NASA display pixels; no enhancement or generated detail."
+  }
+}

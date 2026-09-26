@@ -1,0 +1,35 @@
+{
+  "name": "astra",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build && node scripts/prepare-sites-build.mjs",
+    "preview": "vite preview",
+    "check": "tsc --noEmit",
+    "format": "prettier --write src index.html vite.config.mjs",
+    "test:sites": "node --test tests/sites-worker.test.mjs",
+    "test:data": "node --test tests/real-data.test.mjs",
+    "test:astronomy": "node --test tests/astronomy.test.mjs"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/manrope": "^5.3.0",
+    "@fontsource/noto-sans-arabic": "^5.3.0",
+    "@phosphor-icons/react": "^2.1.10",
+    "@types/leaflet": "^1.9.22",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "5.0.4",
+    "astronomy-engine": "^2.1.19",
+    "leaflet": "^1.9.4",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "typescript": "^7.0.2",
+    "vite": "^6.4.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}

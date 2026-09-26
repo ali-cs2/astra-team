@@ -1,0 +1,62 @@
+[
+  {
+    "id": "center",
+    "name": ["Muscat", "مسقط"],
+    "coordinates": [23.6123628, 58.5938134],
+    "color": "#e8b46f",
+    "osmId": 19168058,
+    "osmType": "relation",
+    "url": "https://www.openstreetmap.org/relation/19168058",
+    "retrievedAt": "2026-09-26T09:24:26.851472+00:00",
+    "source": "OpenStreetMap / Nominatim",
+    "displayName": "Muscat, Muscat Province, Muscat Governorate, Oman"
+  },
+  {
+    "id": "seeb",
+    "name": ["Seeb", "السيب"],
+    "coordinates": [23.65478, 58.2058419],
+    "color": "#cb8e57",
+    "osmId": 19163878,
+    "osmType": "relation",
+    "url": "https://www.openstreetmap.org/relation/19163878",
+    "retrievedAt": "2026-09-26T09:24:30.090275+00:00",
+    "source": "OpenStreetMap / Nominatim",
+    "displayName": "Seeb Province, Muscat Governorate, Oman"
+  },
+  {
+    "id": "nizwa",
+    "name": ["Nizwa", "نزوى"],
+    "coordinates": [22.9323884, 57.5311],
+    "color": "#b77958",
+    "osmId": 19563318,
+    "osmType": "relation",
+    "url": "https://www.openstreetmap.org/relation/19563318",
+    "retrievedAt": "2026-09-26T09:24:33.774912+00:00",
+    "source": "OpenStreetMap / Nominatim",
+    "displayName": "Nizwa Province, Ad Dakhiliyah Governorate, 611, Oman"
+  },
+  {
+    "id": "ibra",
+    "name": ["Ibra", "إبراء"],
+    "coordinates": [22.7081773, 58.5409926],
+    "color": "#8cbad0",
+    "osmId": 19570211,
+    "osmType": "relation",
+    "url": "https://www.openstreetmap.org/relation/19570211",
+    "retrievedAt": "2026-09-26T09:24:39.676131+00:00",
+    "source": "OpenStreetMap / Nominatim",
+    "displayName": "Ibra Province, Ash Sharqiyah North Governorate, Oman"
+  },
+  {
+    "id": "sur",
+    "name": ["Sur", "صور"],
+    "coordinates": [22.5693088, 59.5295518],
+    "color": "#73958e",
+    "osmId": 1716933902,
+    "osmType": "node",
+    "url": "https://www.openstreetmap.org/node/1716933902",
+    "retrievedAt": "2026-09-26T09:24:41.446252+00:00",
+    "source": "OpenStreetMap / Nominatim",
+    "displayName": "Sur, Jalaan Bani Bu ALi Province, Ash Sharqiyah South Governorate, 411, Oman"
+  }
+]

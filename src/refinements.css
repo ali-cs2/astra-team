@@ -1,0 +1,125 @@
+/* Fidelity refinements after the first source / browser comparison. */
+input[type="range"] {
+  direction: ltr;
+}
+.terrain-tile {
+  filter: brightness(0.36) saturate(0.45);
+}
+.night-map .leaflet-tile-pane {
+  transition: filter 0.6s;
+}
+/* Content stays readable if reveal observers are interrupted during navigation. */
+.reveal {
+  opacity: 1;
+  transform: none;
+}
+.reveal.visible {
+  animation: soft-in 0.5s both;
+}
+html:has(.presenting) {
+  scroll-padding-top: 0;
+}
+.presenting .location-panel {
+  padding: 22px;
+}
+.presenting .location-panel .large-score {
+  font-size: 50px;
+  margin-top: 10px;
+}
+.presenting .location-panel dl {
+  margin: 16px 0 12px;
+}
+.presenting .location-panel dl > div {
+  padding-block: 10px;
+}
+.presenting .source-layout .night-map {
+  min-height: 360px;
+}
+.container {
+  width: min(1280px, 87.4%);
+}
+.hero h1 {
+  font-weight: 600;
+  font-size: clamp(64px, 5.5vw, 100px);
+}
+.hero-content > p {
+  max-width: 500px;
+}
+.navbar nav,
+.navbar nav button,
+.present-button {
+  font-size: 13px;
+}
+.tool-strip strong {
+  font-size: 16px;
+}
+.tool-strip small {
+  font-size: 13px;
+}
+#problem {
+  padding-top: 44px;
+}
+#problem .section-heading .eyebrow {
+  display: none;
+}
+#problem .section-description {
+  margin-top: 10px;
+  max-width: none;
+}
+#problem .section-heading {
+  margin-bottom: 18px;
+}
+#problem .comparison {
+  height: clamp(200px, 15vw, 280px);
+}
+.presenting #problem {
+  padding-top: 42px;
+}
+.presenting #problem .section-heading .eyebrow {
+  display: block;
+}
+.presenting #problem .comparison {
+  height: clamp(240px, 42vh, 470px);
+}
+@media (min-width: 1700px) {
+  .container {
+    width: min(1550px, calc(100% - 200px));
+  }
+}
+@media (max-width: 1100px) {
+  .container {
+    width: calc(100% - 80px);
+  }
+  .hero h1 {
+    font-size: 65px;
+  }
+  .tool-strip strong {
+    font-size: 14px;
+  }
+  .tool-strip small {
+    font-size: 11px;
+  }
+}
+@media (max-width: 760px) {
+  .container {
+    width: calc(100% - 40px);
+  }
+  .hero h1 {
+    font-size: clamp(44px, 10.7vw, 68px);
+  }
+  .tool-strip strong {
+    font-size: 13px;
+  }
+  .tool-strip small {
+    font-size: 11px;
+  }
+  #problem {
+    padding-top: 50px;
+  }
+  #problem .comparison {
+    height: 260px;
+  }
+  .presenting #problem .comparison {
+    height: 320px;
+  }
+}

@@ -1,0 +1,33 @@
+[
+  {
+    "author": "Aksaker et al.",
+    "title": "Global Site Selection for Astronomy",
+    "journal": "Monthly Notices of the Royal Astronomical Society, 2020",
+    "doi": "10.1093/mnras/staa201",
+    "concept": [
+      "GIS and multi-criteria site suitability.",
+      "التحليل الجغرافي وتقييم ملاءمة المواقع بمعايير متعددة."
+    ]
+  },
+  {
+    "author": "Barentine et al.",
+    "title": "Recovering the city street lighting fraction from skyglow measurements in a large-scale municipal dimming experiment",
+    "journal": "Journal of Quantitative Spectroscopy and Radiative Transfer, 2020",
+    "url": "https://arxiv.org/abs/2005.12357",
+    "doi": "",
+    "concept": [
+      "Ground measurements after dimming in Tucson; not a transferable Muscat model.",
+      "قياسات أرضية بعد تخفيف الإنارة في توسان؛ ليست نموذجاً قابلاً للنقل إلى مسقط."
+    ]
+  },
+  {
+    "author": "Barentine et al.",
+    "title": "Skyglow changes over Tucson, Arizona, resulting from a municipal LED street lighting conversion",
+    "journal": "Journal of Quantitative Spectroscopy and Radiative Transfer, 2018",
+    "doi": "10.1016/j.jqsrt.2018.02.038",
+    "concept": [
+      "Outdoor lighting changes and their effect on skyglow.",
+      "تغيّرات الإنارة الخارجية وتأثيرها على توهج السماء."
+    ]
+  }
+]

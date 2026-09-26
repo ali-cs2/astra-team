@@ -1,0 +1,42 @@
+[
+  {
+    "title": ["Observe the lights", "شاهد الإنارة"],
+    "description": [
+      "NASA Black Marble shows satellite-observed night lights in northern Oman. Compare the historical 2012 and 2016 composites.",
+      "تُظهر صور NASA Black Marble الإنارة المرصودة فضائياً في شمال عُمان. قارن الصورتين التاريخيتين لعامي 2012 و2016."
+    ],
+    "label": ["NASA VIIRS composite year", "سنة صورة NASA VIIRS المجمّعة"]
+  },
+  {
+    "title": ["Check the forecast", "راجع التوقعات"],
+    "description": [
+      "Read the next 20:00 forecast for the Muscat point: cloud cover, relative humidity and visibility. Compare the other two fixed locations using the same forecast hour.",
+      "اقرأ توقعات نقطة مسقط عند 20:00 القادمة: السحب والرطوبة ومدى الرؤية. قارن الموقعين الآخرين للساعة نفسها."
+    ],
+    "label": ["Muscat forecast cloud cover", "الغطاء السحابي المتوقع لمسقط"]
+  },
+  {
+    "title": ["Locate the towns", "حدّد المدن"],
+    "description": [
+      "OpenStreetMap supplies real place reference coordinates. Lines show straight-line distances to these mapped points; they do not represent measured light-pollution shares.",
+      "يوفر OpenStreetMap إحداثيات مرجعية حقيقية للمواقع. الخطوط تعرض المسافات المباشرة إلى هذه النقاط ولا تمثل نِسب تلوث ضوئي مقاسة."
+    ],
+    "label": ["Geographic source", "المصدر الجغرافي"]
+  },
+  {
+    "title": ["Study a real intervention", "ادرس تدخّلاً حقيقياً"],
+    "description": [
+      "In a separate experiment in Tucson, USA, municipal streetlights were dimmed from 90% to 30% of full power draw after midnight. Results were published by Barentine et al. in 2020.",
+      "في تجربة مستقلة في توسان، أمريكا، خُفّضت قدرة إنارة الشوارع من 90٪ إلى 30٪ بعد منتصف الليل. نشر Barentine وزملاؤه النتائج في 2020."
+    ],
+    "label": ["Tucson dimming settings", "إعدادات التخفيف في توسان"]
+  },
+  {
+    "title": ["Read the measured result", "اقرأ النتيجة المقاسة"],
+    "description": [
+      "At the near-center Tucson measurement site, zenith sky brightness decreased by 5.4 ± 0.9%. The adjacent suburban result was 3.6 ± 0.9%. These are published measurements, not predictions for Muscat.",
+      "انخفض سطوع السماء عند سمت الرأس قرب وسط توسان بنسبة 5.4 ± 0.9٪، وبالموقع المجاور خارج المركز بنسبة 3.6 ± 0.9٪. هذه قياسات منشورة وليست توقعات لمسقط."
+    ],
+    "label": ["Tucson near-center decrease", "الانخفاض قرب وسط توسان"]
+  }
+]

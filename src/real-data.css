@@ -1,0 +1,583 @@
+.data-credit {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 11px;
+  color: #a8c5d6;
+  line-height: 1.65;
+  padding: 14px 0;
+}
+.data-credit small,
+.data-credit a {
+  display: block;
+}
+.data-credit a,
+.source-links a,
+.study-source,
+.case-source {
+  color: #afd9ed;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.case-copy .data-credit {
+  font-size: 10px;
+}
+.case-copy .data-credit small {
+  font-size: 9px;
+}
+.presenting .real-location .data-credit {
+  display: none;
+}
+.data-credit small {
+  font-size: 10px;
+}
+.data-status {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: #d3ac71;
+}
+.data-status.live {
+  background: #8bcfc5;
+}
+.data-refresh {
+  margin-inline-start: auto;
+  min-height: 36px;
+  padding: 8px 14px;
+  white-space: nowrap;
+  font-size: 11px;
+}
+.real-location .large-score {
+  margin-top: 18px;
+}
+.coordinate-label {
+  display: block;
+  color: #87a8bc;
+  font-size: 10px;
+  margin-top: 8px;
+}
+.presenting #map {
+  padding-block: 28px 80px;
+}
+.presenting #map .heading-with-action {
+  margin-bottom: 10px;
+}
+.presenting #map .heading-with-action .section-heading {
+  margin-bottom: 0;
+}
+.presenting #map > .container > .data-credit > span:nth-child(2) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  align-items: center;
+}
+.presenting #map > .container > .data-credit {
+  padding: 10px 0;
+  align-items: center;
+}
+.presenting #map .map-workspace .night-map {
+  min-height: 350px;
+}
+.presenting #map .real-location {
+  padding: 16px 20px;
+}
+.presenting #map .real-location dl {
+  margin: 12px 0;
+}
+.presenting #map .real-location dl > div {
+  padding-block: 8px;
+}
+.presenting #map .location-pills {
+  margin-top: 14px;
+}
+.presenting #map .case-note {
+  margin-top: 12px;
+  font-size: 10px;
+}
+.real-location .location-source {
+  font-size: 10px;
+  margin-top: 15px;
+}
+.real-location .location-source strong {
+  font-size: 12px;
+}
+.real-location .data-credit {
+  border-top: 1px solid #263e4c;
+  margin-top: 12px;
+}
+.real-location dl dd {
+  font-size: 12px;
+}
+.real-factors {
+  margin: 0;
+}
+.real-factors > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 10px 0;
+  border-bottom: 1px solid #243c49;
+  font-size: 12px;
+}
+.real-factors dt {
+  color: #abc2cf;
+}
+.real-factors dd {
+  margin: 0;
+  font-size: 16px;
+}
+.real-factors small {
+  font-size: 10px;
+  color: #8ba9b9;
+}
+.source-links {
+  font-size: 11px;
+  line-height: 1.8;
+  margin-top: 14px;
+}
+.source-links a {
+  display: block;
+}
+.evidence-study .sim-controls > p {
+  font-size: 13px;
+  color: #b4cbd8;
+  line-height: 1.7;
+  margin: 15px 0 23px;
+}
+.study-sites {
+  flex-direction: column;
+  min-width: 0;
+}
+.simulator > * {
+  min-width: 0;
+}
+.study-sites button {
+  min-height: 44px;
+}
+.study-source {
+  display: block;
+  margin-top: 22px;
+  font-size: 12px;
+}
+.experiment-bars {
+  padding: 24px;
+  background: #0d1d2a;
+  border: 1px solid #29434f;
+  border-radius: 4px;
+}
+.experiment-bars > div {
+  display: grid;
+  grid-template-columns: 130px 1fr 52px;
+  gap: 18px;
+  align-items: center;
+  margin: 24px 0;
+  font-size: 13px;
+}
+.experiment-bars strong {
+  font-size: 24px;
+  font-weight: 500;
+}
+.power-track {
+  background: #233b4c;
+  height: 10px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.power-track i {
+  height: 100%;
+  display: block;
+  background: #b4dcf1;
+  transition: width 0.25s ease;
+}
+.planner-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px 20px;
+  background: #11212d;
+  border: 1px solid #2d4554;
+  margin-bottom: 20px;
+}
+.planner-controls label {
+  font-size: 12px;
+  color: #aec9d8;
+}
+.planner-controls select,
+.planner-controls input {
+  width: auto;
+  color: #e4eef3;
+  background: #0a1924;
+  border: 1px solid #385667;
+  border-radius: 3px;
+  padding: 10px;
+  color-scheme: dark;
+  min-width: 0;
+}
+.planner-controls .button {
+  min-height: 40px;
+  padding: 10px 15px;
+  font-size: 11px;
+}
+.planner-controls > span {
+  width: 100%;
+  font-size: 10px;
+  color: #8caabb;
+}
+.planner-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.planner-card {
+  background: #0c1d29;
+  border: 1px solid #2a4656;
+  padding: 24px;
+  border-radius: 4px;
+  min-width: 0;
+}
+.planner-card h3 {
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: 400;
+  margin: 14px 0;
+}
+.planner-card > p:not(.eyebrow) {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #afc9d8;
+}
+.planner-card dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 20px 0;
+}
+.planner-card dt {
+  font-size: 10px;
+  color: #91aeba;
+}
+.planner-card dd {
+  margin: 6px 0 0;
+  font-size: 16px;
+  color: #d7e9f3;
+}
+.planner-weather {
+  font-size: 12px;
+  color: #a7d5e2;
+  border-top: 1px solid #294451;
+  padding: 14px 0;
+}
+.planner-card small {
+  display: block;
+  font-size: 10px;
+  line-height: 1.7;
+  color: #92b1c3;
+}
+.planner-sources {
+  font-size: 10px;
+  color: #8eacbf;
+  line-height: 1.6;
+  margin-top: 16px;
+}
+.planner-sources a {
+  display: inline-block;
+  margin-inline-end: 20px;
+  color: #b3d7e7;
+}
+.presenting #planner .section-heading {
+  margin-bottom: 16px;
+}
+.presenting .planner-card {
+  padding: 16px;
+}
+.presenting .planner-card h3 {
+  margin: 8px 0;
+  font-size: 28px;
+}
+.presenting .planner-card dl {
+  margin: 12px 0;
+  gap: 10px;
+}
+.presenting .planner-controls {
+  margin-bottom: 14px;
+  padding: 10px 14px;
+}
+.presenting .planner-sources {
+  margin-top: 10px;
+}
+@media (max-width: 760px) {
+  .planner-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .planner-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .planner-controls > span {
+    width: auto;
+  }
+  .planner-card {
+    padding: 20px;
+  }
+}
+.scenario-location {
+  display: block;
+  font-size: 11px;
+  color: #b4cbd8;
+  margin: 8px 0;
+}
+.dimming-inputs {
+  margin: 18px 0;
+}
+.dimming-inputs label {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+}
+.dimming-inputs input {
+  width: 100%;
+  accent-color: #acd6e5;
+  margin: 10px 0 16px;
+  cursor: pointer;
+}
+.scenario-weather {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 0 18px;
+  font-size: 12px;
+}
+.scenario-weather > div {
+  margin-inline-end: auto;
+}
+.scenario-weather small {
+  display: block;
+  color: #9cb7c6;
+  font-size: 10px;
+  margin-top: 6px;
+}
+.scenario-weather b {
+  display: block;
+  font-size: 18px;
+  margin-top: 6px;
+  font-weight: 500;
+}
+.evidence-study .sim-controls select {
+  width: 100%;
+  min-width: 0;
+}
+.evidence-study .study-sites button {
+  white-space: normal;
+}
+.evidence-study .sim-controls > p {
+  margin: 12px 0;
+}
+.evidence-study .simulate-button {
+  margin-top: 14px;
+}
+.evidence-study .study-source {
+  margin-top: 14px;
+}
+.presenting .evidence-study .sim-controls {
+  padding: 16px;
+}
+.presenting .dimming-inputs {
+  margin: 10px 0;
+}
+.presenting .dimming-inputs input {
+  margin: 6px 0 8px;
+}
+.presenting .evidence-study .sim-controls > p {
+  font-size: 11px;
+}
+.compact .scenario-weather {
+  gap: 10px;
+}
+@media (max-width: 760px) {
+  .evidence-study {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .scenario-weather {
+    gap: 12px;
+  }
+  .scenario-weather > div {
+    width: 100%;
+  }
+  .experiment-bars > div {
+    grid-template-columns: 80px minmax(0, 1fr) 46px;
+    gap: 10px;
+  }
+  .evidence-study .improvement-row {
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .power-track i {
+    transition: none;
+  }
+}
+.experiment-bars > small {
+  color: #9bb6c6;
+  font-size: 11px;
+}
+.measured-result {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 25px 0;
+}
+.measured-result > span {
+  font-size: 13px;
+  color: #c0d3df;
+}
+.measured-result strong {
+  font-size: clamp(35px, 3.4vw, 58px);
+  font-family: Manrope, sans-serif;
+  font-weight: 400;
+}
+.measured-result small {
+  font-size: 12px;
+  color: #9cb7c6;
+}
+.evidence-study .improvement-row strong {
+  font-size: 30px;
+}
+.evidence-study .improvement-row > div {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  min-width: 0;
+}
+.evidence-study .improvement-row span {
+  max-width: none;
+}
+.presenting #improve .section-heading {
+  margin-bottom: 18px;
+}
+.presenting #improve .scenario-weather {
+  padding: 0 0 12px;
+}
+.presenting #improve .experiment-bars {
+  padding: 16px;
+}
+.presenting #improve .experiment-bars > div {
+  margin: 14px 0;
+}
+.presenting #improve .measured-result {
+  padding: 16px 0;
+  gap: 8px;
+}
+.presenting #improve .sim-note {
+  font-size: 10px;
+  margin-top: 10px;
+}
+.evidence-study .improvement-row small {
+  display: block;
+  margin-top: 7px;
+  color: #aac0cc;
+  font-size: 11px;
+}
+.evidence-study .sim-note {
+  font-size: 12px;
+  line-height: 1.7;
+}
+.case-source {
+  font-size: 12px;
+  margin-top: 12px;
+}
+.case-metric strong {
+  font-size: clamp(30px, 3.8vw, 65px);
+}
+.map-legend .legend-labels {
+  margin-top: 6px;
+  white-space: normal;
+}
+.comparison > img {
+  object-fit: contain;
+  object-position: center;
+}
+#problem > .container {
+  max-width: 960px;
+}
+#problem .comparison,
+.presenting #problem .comparison {
+  height: auto;
+  aspect-ratio: 911 / 317;
+  background: #030811;
+  border: 1px solid #263544;
+}
+@media (max-width: 760px) {
+  #problem .comparison,
+  .presenting #problem .comparison {
+    height: auto;
+    aspect-ratio: 2 / 1;
+  }
+}
+.comparison-footer {
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.presenting .real-location .data-credit {
+  padding-bottom: 0;
+  font-size: 10px;
+}
+.presenting .real-location .data-credit small {
+  font-size: 9px;
+}
+.presenting .map-workspace .night-map {
+  min-height: 380px;
+}
+.presenting .real-location {
+  padding: 20px;
+}
+.presenting .real-location .large-score {
+  font-size: 52px;
+  margin-top: 10px;
+}
+.demo-sidebar .evidence-study {
+  display: block;
+}
+.demo-sidebar .experiment-bars {
+  margin-top: 20px;
+  padding: 14px;
+}
+.demo-sidebar .experiment-bars > div {
+  grid-template-columns: 90px 1fr 46px;
+  gap: 8px;
+}
+.demo-sidebar .measured-result strong {
+  font-size: 32px;
+}
+@media (max-width: 650px) {
+  .data-credit {
+    flex-wrap: wrap;
+  }
+  .data-credit > span:nth-child(2) {
+    flex: 1;
+  }
+  .data-refresh {
+    margin-inline-start: 15px;
+  }
+  .experiment-bars {
+    padding: 18px;
+  }
+  .experiment-bars > div {
+    grid-template-columns: 90px 1fr 46px;
+    gap: 10px;
+    font-size: 11px;
+  }
+  .experiment-bars strong {
+    font-size: 20px;
+  }
+  .evidence-study .improvement-row strong {
+    font-size: 24px;
+  }
+  .case-metric strong {
+    font-size: 35px;
+  }
+}

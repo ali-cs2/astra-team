@@ -1,0 +1,26 @@
+{
+  "title": "Tucson municipal streetlight dimming experiment",
+  "authors": "Barentine et al.",
+  "year": 2019,
+  "publicationYear": 2020,
+  "city": "Tucson, Arizona, USA",
+  "streetlightsApproximate": 20000,
+  "beforePowerPercent": 90,
+  "afterPowerPercent": 30,
+  "measurementSites": [
+    {
+      "id": "center",
+      "name": ["Near city center", "قرب وسط المدينة"],
+      "skyBrightnessDecrease": 5.4,
+      "uncertainty": 0.9
+    },
+    {
+      "id": "suburban",
+      "name": ["Adjacent suburban site", "موقع مجاور خارج المركز"],
+      "skyBrightnessDecrease": 3.6,
+      "uncertainty": 0.9
+    }
+  ],
+  "sourceUrl": "https://arxiv.org/abs/2005.12357",
+  "description": "Published Tucson measurements, not an Oman forecast. Power reduction is arithmetic for the affected fixtures, not city-wide energy savings."
+}

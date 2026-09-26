@@ -1,0 +1,20 @@
+[
+  {
+    "id": "muscat",
+    "name": ["Muscat, Oman", "مسقط، عُمان"],
+    "short": ["Muscat Coast", "ساحل مسقط"],
+    "coordinates": [23.588, 58.383]
+  },
+  {
+    "id": "akhdar",
+    "name": ["Jebel Akhdar", "الجبل الأخضر"],
+    "short": ["Jebel Akhdar", "الجبل الأخضر"],
+    "coordinates": [23.073, 57.666]
+  },
+  {
+    "id": "sands",
+    "name": ["Sharqiyah Sands", "رمال الشرقية"],
+    "short": ["Sharqiyah Sands", "رمال الشرقية"],
+    "coordinates": [22.25, 58.67]
+  }
+]

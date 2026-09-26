@@ -1,0 +1,56 @@
+[
+  {
+    "name": "NASA Black Marble",
+    "ar": "NASA Black Marble",
+    "description": [
+      "Historical 2012 and 2016 night-light composites displayed in ASTRA.",
+      "صور الإنارة الليلية التاريخية لعامي 2012 و2016 المعروضة في ASTRA."
+    ],
+    "url": "https://science.nasa.gov/earth/earth-observatory/earth-at-night/maps/"
+  },
+  {
+    "name": "Open-Meteo forecast API",
+    "ar": "توقعات Open-Meteo",
+    "description": [
+      "Cloud cover, humidity, visibility, elevation and sunset/sunrise.",
+      "السحب والرطوبة ومدى الرؤية والارتفاع والغروب والشروق."
+    ],
+    "url": "https://open-meteo.com/en/docs"
+  },
+  {
+    "name": "OpenStreetMap / Nominatim",
+    "ar": "OpenStreetMap / Nominatim",
+    "description": [
+      "Geographic place coordinates; distance calculated on a spherical Earth.",
+      "إحداثيات المواقع الجغرافية؛ المسافة محسوبة على نموذج أرض كروي."
+    ],
+    "url": "https://www.openstreetmap.org/copyright"
+  },
+  {
+    "name": "Tucson dimming experiment",
+    "ar": "تجربة تخفيف إنارة توسان",
+    "description": [
+      "Published ground measurements and uncertainty, Barentine et al., 2020.",
+      "قياسات أرضية منشورة وحدود عدم اليقين، Barentine وزملاؤه، 2020."
+    ],
+    "url": "https://arxiv.org/abs/2005.12357"
+  },
+  {
+    "name": "DarkSky International",
+    "ar": "DarkSky International",
+    "description": [
+      "Principles for useful, targeted, responsible lighting.",
+      "مبادئ الإنارة المفيدة والموجّهة والمسؤولة."
+    ],
+    "url": "https://darksky.org/resources/guides-and-how-tos/lighting-principles/"
+  },
+  {
+    "name": "GIS & environmental data",
+    "ar": "التحليل الجغرافي والبيئي",
+    "description": [
+      "Elevation, clouds, and atmospheric clarity in context.",
+      "الارتفاع والسحب وصفاء الجو ضمن السياق الجغرافي."
+    ],
+    "url": "https://arxiv.org/abs/1912.01911"
+  }
+]
