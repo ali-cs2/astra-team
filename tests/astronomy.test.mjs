@@ -13,6 +13,7 @@ test("full Moon evening is never presented as a young crescent", () => {
   const p = planNight("2026-09-26", muscat);
   assert.ok(p.illuminated > 99);
   assert.equal(p.crescent.time, null);
+  assert.equal(p.crescent.azimuth, null);
   assert.equal(p.best.moonFree, false);
 });
 test("crescent attempt lies strictly between local sunset and moonset", () => {
@@ -21,6 +22,7 @@ test("crescent attempt lies strictly between local sunset and moonset", () => {
     p.crescent.time > p.crescent.sunset && p.crescent.time < p.crescent.moonset,
   );
   assert.ok(p.crescent.altitude > 0);
+  assert.ok(p.crescent.azimuth > 220 && p.crescent.azimuth < 300);
   assert.ok(p.crescent.age > 24 && p.crescent.age < 72);
   assert.equal(p.crescent.weather, null);
 });

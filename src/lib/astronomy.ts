@@ -77,6 +77,12 @@ export function planNight(
           sunset.getTime() + ((moonset.getTime() - sunset.getTime()) * 4) / 9,
         )
       : null;
+  const moonDirection = crescentTime
+    ? (() => {
+        const eq = Equator(Body.Moon, crescentTime, observer, true, true);
+        return Horizon(crescentTime, observer, eq.ra, eq.dec, "normal");
+      })()
+    : null;
   const lastNewMoon =
     SearchMoonPhase(0, new Date(at.getTime() - 35 * 86400000), 35)?.date ??
     null;
@@ -91,7 +97,8 @@ export function planNight(
     moonset,
     eveningCrescent,
     lag: moonAtSunset > 0 ? lag : null,
-    altitude: crescentTime ? altitude(Body.Moon, observer, crescentTime) : null,
+    altitude: moonDirection?.altitude ?? null,
+    azimuth: moonDirection?.azimuth ?? null,
     elongation: crescentTime ? AngleFromSun(Body.Moon, crescentTime) : null,
     age: conjunction ? (at.getTime() - conjunction.getTime()) / 3600000 : null,
     weather: crescentTime ? weatherAt(forecast, crescentTime) : null,

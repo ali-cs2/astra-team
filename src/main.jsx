@@ -13,6 +13,8 @@ import "./astra.css";
 import "./refinements.css";
 import "./space-hero.css";
 import "./real-data.css";
+import "./liquid-glass.css";
+import "./crescent-story.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
