@@ -1069,12 +1069,29 @@ export function App() {
   const [demo, setDemo] = useState(false),
     [present, setPresent] = useState(false),
     [active, setActive] = useState(0),
+    [lampStage, setLampStage] = useState(0),
     [menu, setMenu] = useState(false),
     [selected, setSelected] = useState("muscat"),
     [highlighted, setHighlighted] = useState("center"),
     [layer, setLayer] = useState(true),
     [scrolled, setScrolled] = useState(false);
   const t = (en: string, arabic: string) => (ar ? arabic : en);
+  const lightingIndex = storyIds.indexOf("lighting");
+  function movePresentation(direction: 1 | -1) {
+    if (active === lightingIndex) {
+      if (direction === 1 && lampStage < 4) {
+        setLampStage(lampStage + 1);
+        return;
+      }
+      if (direction === -1 && lampStage > 0) {
+        setLampStage(lampStage - 1);
+        return;
+      }
+    }
+    const next = Math.max(0, Math.min(storyIds.length - 1, active + direction));
+    if (next === lightingIndex) setLampStage(direction === 1 ? 0 : 4);
+    go(storyIds[next]);
+  }
   useEffect(() => {
     document.documentElement.lang = "en";
     document.documentElement.dir = "ltr";
@@ -1123,19 +1140,12 @@ export function App() {
       ) {
         e.preventDefault();
         const forward = ["ArrowRight", "ArrowDown", "PageDown"].includes(e.key);
-        go(
-          storyIds[
-            Math.max(
-              0,
-              Math.min(storyIds.length - 1, active + (forward ? 1 : -1)),
-            )
-          ],
-        );
+        movePresentation(forward ? 1 : -1);
       }
     };
     document.addEventListener("keydown", key);
     return () => document.removeEventListener("keydown", key);
-  }, [present, active, demo]);
+  }, [present, active, demo, lampStage]);
   useLayoutEffect(() => {
     if (
       !("IntersectionObserver" in window) ||
@@ -1193,6 +1203,7 @@ export function App() {
   function startPresentation() {
     setMenu(false);
     setPresent(true);
+    setLampStage(0);
     (document.activeElement as HTMLElement)?.blur();
     go("hero");
   }
@@ -1380,7 +1391,7 @@ export function App() {
             </div>
           </section>
           <CrescentFinder ar={ar} onSelect={setSelected} onMap={() => go("map")} />
-          <LampHero ar={ar} onNext={() => go("map")} />
+          <LampHero ar={ar} onNext={() => go("map")} stage={lampStage} onStageChange={setLampStage} />
           <div className="tool-strip">
             {[
               [MapPin, "Explore the pilot map", "اختر سماء أفضل", "See the three Oman observing sites.", "استكشف مواقع رصد أكثر ظلمة.", "map"],
@@ -1699,13 +1710,13 @@ export function App() {
             <button
               className="icon-button"
               disabled={active === 0}
-              onClick={() => go(storyIds[Math.max(0, active - 1)])}
+              onClick={() => movePresentation(-1)}
               aria-label={t("Previous section", "القسم السابق")}
             >
               <CaretLeft size={21} />
             </button>
             <div>
-              <span>{storyNames[active][ar ? 1 : 0]}</span>
+              <span>{storyNames[active][ar ? 1 : 0]}{active === lightingIndex && ` · ${lampStage} / 4`}</span>
               <small>
                 {String(active + 1).padStart(2, "0")} / {storyIds.length}
               </small>
@@ -1713,9 +1724,7 @@ export function App() {
             <button
               className="icon-button"
               disabled={active === storyIds.length - 1}
-              onClick={() =>
-                go(storyIds[Math.min(storyIds.length - 1, active + 1)])
-              }
+              onClick={() => movePresentation(1)}
               aria-label={t("Next section", "القسم التالي")}
             >
               <CaretRight size={21} />
