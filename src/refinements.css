@@ -8,13 +8,10 @@ input[type="range"] {
 .night-map .leaflet-tile-pane {
   transition: filter 0.6s;
 }
-/* Content stays readable if reveal observers are interrupted during navigation. */
+/* Section containers stay readable; individual motion targets handle entrances. */
 .reveal {
   opacity: 1;
   transform: none;
-}
-.reveal.visible {
-  animation: soft-in 0.5s both;
 }
 html:has(.presenting) {
   scroll-padding-top: 0;

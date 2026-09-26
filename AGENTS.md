@@ -1,5 +1,11 @@
 # Prototype Instructions
 
+Current visual direction: carry the earlier night-sky prototype's liquid-glass theme through ASTRA. Use deep navy, diffused blue light, soft white text, restrained warm accents, consistent card padding and borders, and cinematic motion. Let headings, images, maps and cards reveal when each enters the viewport; animate real numeric readouts to their sourced value. Preserve the existing data meaning, layout flow, copy and interactive controls while polishing visuals. The user later allowed browser review of the animation fix.
+
+Latest presentation scope: show the English interface only. Pitch sequence: cinematic opening, define light pollution and who it affects, local Hijri crescent and astronomy relevance, sourced change-over-time evidence, ASTRA's proposed workflow, live "see for yourself" crescent finder, then the interactive 3D lamp lighting chapter. Detailed map, planner, source, simulation, case study, and science sections follow. Keep visible copy short enough to support a spoken hackathon pitch. The finder is an explicitly limited Oman pilot: location is used locally to compare three known sites, and the calculated azimuth/altitude is observing guidance, not a guaranteed crescent sighting or Hijri-calendar decision.
+
+Scroll motion lives in one `useLayoutEffect` observer in `src/App.tsx`. It applies `motion-pending` before paint and swaps it for `motion-in` once per target; matching rules are in `src/liquid-glass.css`. Keep whole-section `.reveal` containers static. Do not add a second entrance animation to them: the previous overlap caused visible flashing while scrolling.
+
 Improve must be interactive: share the selected location across map, observing, sources, Improve and demo; show that location's real forecast context. Dimming sliders update only calculated affected-fixture power reduction. Keep Tucson sky-brightness measurements as a separate fixed published reference; do not fabricate a local sky response to weather or arbitrary dimming inputs.
 
 Comparison feedback: show a complete, wider geographic region rather than a heavily zoomed narrow strip. Keep the comparison compact (960px maximum width, native image aspect on desktop), display identical northern Oman bounds for both years, and use contain sizing to prevent clipping. Preserve the real NASA data and working slider.

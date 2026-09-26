@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   useId,
@@ -9,7 +10,6 @@ import {
 } from "react";
 import {
   ArrowRight,
-  ArrowDown,
   MapPin,
   ChartBar,
   Leaf,
@@ -36,7 +36,9 @@ import { powerReduction } from "./lib/scenario";
 import { distanceKm, WEATHER_URL } from "./lib/observations";
 import { useObservations } from "./components/ObservationProvider";
 import { NightMap } from "./components/NightMap";
+import { LampHero } from "./components/LampHero";
 import { SpaceBackground } from "./components/SpaceBackground";
+import { CrescentFinder } from "./components/CrescentFinder";
 import { ObservationPlanner } from "./components/ObservationPlanner";
 const Language = createContext(false);
 function useText() {
@@ -46,7 +48,11 @@ function useText() {
 const storyIds = [
   "hero",
   "problem",
+  "impact",
+  "growth",
   "solution",
+  "crescent",
+  "lighting",
   "map",
   "observe",
   "planner",
@@ -59,7 +65,11 @@ const storyIds = [
 const storyNames = [
   ["Introduction", "المقدمة"],
   ["The problem", "المشكلة"],
+  ["Why it matters here", "لماذا يهمنا"],
+  ["A changing night", "ليل يتغير"],
   ["The solution", "الحل"],
+  ["See for yourself", "شاهد بنفسك"],
+  ["Change the light", "غيّر الضوء"],
   ["Explore the night", "استكشف الليل"],
   ["Find a better sky", "اختر موقع الرصد"],
   ["Plan the night", "خطط للرصد"],
@@ -99,28 +109,87 @@ function Heading({
     </div>
   );
 }
-function Count({ value }: { value: number }) {
-  const [display, setDisplay] = useState(value);
-  const last = useRef(value);
+function Count({
+  value,
+  decimals = 0,
+}: {
+  value: number;
+  decimals?: number;
+}) {
+  const [display, setDisplay] = useState(() =>
+    typeof window !== "undefined" &&
+    matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? value
+      : 0,
+  );
+  const element = useRef<HTMLSpanElement>(null);
+  const last = useRef(0);
+  const started = useRef(false);
   useEffect(() => {
+    const node = element.current;
+    if (!node) return;
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setDisplay(value);
       last.current = value;
+      started.current = true;
       return;
     }
-    const from = last.current;
-    last.current = value;
-    const start = performance.now();
     let frame = 0;
-    const tick = (time: number) => {
-      const p = Math.min(1, (time - start) / 650);
-      setDisplay(Math.round(from + (value - from) * (1 - (1 - p) ** 3)));
-      if (p < 1) frame = requestAnimationFrame(tick);
+    let observer: IntersectionObserver | undefined;
+    const animate = (from: number) => {
+      const start = performance.now();
+      const duration = 900;
+      const scale = 10 ** decimals;
+      const tick = (time: number) => {
+        const progress = Math.min(1, (time - start) / duration);
+        const eased = 1 - (1 - progress) ** 4;
+        const next = from + (value - from) * eased;
+        last.current = next;
+        setDisplay(
+          progress === 1 ? value : Math.round(next * scale) / scale,
+        );
+        if (progress < 1) frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
     };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [value]);
-  return <>{display}</>;
+    if (started.current) {
+      animate(last.current);
+    } else if ("IntersectionObserver" in window) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            started.current = true;
+            observer?.disconnect();
+            animate(0);
+          }
+        },
+        { threshold: 0.25 },
+      );
+      observer.observe(node);
+    } else {
+      started.current = true;
+      animate(0);
+    }
+    return () => {
+      cancelAnimationFrame(frame);
+      observer?.disconnect();
+    };
+  }, [value, decimals]);
+  const formatted = (number: number) =>
+    number.toLocaleString("en", {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    });
+  return (
+    <span
+      className="count-up-value"
+      ref={element}
+      aria-live="off"
+      aria-label={formatted(value)}
+    >
+      {formatted(display)}
+    </span>
+  );
 }
 function Comparison() {
   const t = useText();
@@ -255,7 +324,7 @@ function LocationPanel({ selected }: { selected: string }) {
         E
       </small>
       <div className="large-score">
-        {number(r?.cloud)}
+        {r?.cloud == null ? "—" : <Count value={Math.round(r.cloud)} />}
         <span>%</span>
       </div>
       <p className="muted">
@@ -341,7 +410,11 @@ function Recommendations({
               </small>
             </span>
             <span className="site-score teal">
-              {number(data.get(l.id)?.cloud)}
+              {data.get(l.id)?.cloud == null ? (
+                "—"
+              ) : (
+                <Count value={Math.round(data.get(l.id)!.cloud!)} />
+              )}
               <small>%</small>
             </span>
             <ArrowUpRight size={20} />
@@ -842,13 +915,6 @@ function CaseStudy() {
   const [step, setStep] = useState(0);
   const steps = caseStudy.map((s) => s.title),
     explanations = caseStudy.map((s) => s.description),
-    values = [
-      "2016",
-      `${number(data.get("muscat")?.cloud)}%`,
-      "OSM",
-      `${rules.beforePowerPercent} → ${rules.afterPowerPercent}%`,
-      `${rules.measurementSites[0].skyBrightnessDecrease} ± ${rules.measurementSites[0].uncertainty}%`,
-    ],
     labels = caseStudy.map((s) => s.label);
   return (
     <>
@@ -917,7 +983,38 @@ function CaseStudy() {
           {step === 1 && <DataCredit />}
         </div>
         <div className="case-metric" aria-live="polite">
-          <strong dir="ltr">{values[step]}</strong>
+          <strong dir="ltr" key={`metric-${step}`}>
+            {step === 0 ? (
+              <Count value={2016} />
+            ) : step === 1 ? (
+              data.get("muscat")?.cloud == null ? (
+                "—%"
+              ) : (
+                <>
+                  <Count value={Math.round(data.get("muscat")!.cloud!)} />%
+                </>
+              )
+            ) : step === 2 ? (
+              "OSM"
+            ) : step === 3 ? (
+              <>
+                <Count value={rules.beforePowerPercent} /> →{" "}
+                <Count value={rules.afterPowerPercent} />%
+              </>
+            ) : (
+              <>
+                <Count
+                  value={rules.measurementSites[0].skyBrightnessDecrease}
+                  decimals={1}
+                />{" "}
+                ±{" "}
+                <Count
+                  value={rules.measurementSites[0].uncertainty}
+                  decimals={1}
+                />%
+              </>
+            )}
+          </strong>
           <span>{t(labels[step][0], labels[step][1])}</span>
           <a
             className="case-source"
@@ -968,8 +1065,8 @@ function CaseStudy() {
   );
 }
 export function App() {
-  const [ar, setAr] = useState(false),
-    [demo, setDemo] = useState(false),
+  const ar = false;
+  const [demo, setDemo] = useState(false),
     [present, setPresent] = useState(false),
     [active, setActive] = useState(0),
     [menu, setMenu] = useState(false),
@@ -979,12 +1076,10 @@ export function App() {
     [scrolled, setScrolled] = useState(false);
   const t = (en: string, arabic: string) => (ar ? arabic : en);
   useEffect(() => {
-    document.documentElement.lang = ar ? "ar" : "en";
-    document.documentElement.dir = ar ? "rtl" : "ltr";
-    document.title = ar
-      ? "ASTRA — شاهد الليل. احمِ السماء."
-      : "ASTRA — See the Night. Protect the Sky.";
-  }, [ar]);
+    document.documentElement.lang = "en";
+    document.documentElement.dir = "ltr";
+    document.title = "ASTRA — See the Night. Protect the Sky.";
+  }, []);
   useEffect(() => {
     const handle = () => {
       setScrolled(window.scrollY > 40);
@@ -1041,19 +1136,59 @@ export function App() {
     document.addEventListener("keydown", key);
     return () => document.removeEventListener("keydown", key);
   }, [present, active, demo]);
-  useEffect(() => {
-    const observer = new IntersectionObserver(
+  useLayoutEffect(() => {
+    if (
+      !("IntersectionObserver" in window) ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+
+    // Prepare targets before the browser paints, then reveal each exactly once.
+    // The older whole-section reveal caused a second fade over these animations.
+    const motionObserver = new IntersectionObserver(
       (entries) =>
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
+            entry.target.classList.remove("motion-pending");
+            entry.target.classList.add("motion-in");
+            motionObserver.unobserve(entry.target);
           }
         }),
-      { threshold: 0.07 },
+      { threshold: 0.13, rootMargin: "0px 0px -6% 0px" },
     );
-    document.querySelectorAll(".reveal").forEach((n) => observer.observe(n));
-    return () => observer.disconnect();
+    const motionTargets = [
+      ".tool-strip",
+      "#crescent .crescent-intro",
+      "#crescent .crescent-workspace",
+      ".section-heading",
+      "#problem .pitch-impact-grid",
+      "#impact .regional-story",
+      "#growth .growth-evidence",
+      "#solution .solution-flow",
+      "#map .map-workspace",
+      "#observe .observe-layout",
+      "#planner .planner-controls",
+      "#planner .planner-cards",
+      "#sources .source-layout",
+      "#improve .simulator",
+      "#case-study .case-tabs",
+      "#case-study .case-stage",
+      "#science .science-grid",
+      "#science .research-foundation",
+      "#final",
+    ].join(",");
+    const targets = document.querySelectorAll(motionTargets);
+    targets.forEach((node) => {
+      if (!node.classList.contains("motion-in")) {
+        node.classList.add("motion-pending");
+        motionObserver.observe(node);
+      }
+    });
+    return () => {
+      motionObserver.disconnect();
+      targets.forEach((node) => node.classList.remove("motion-pending"));
+    };
   }, []);
   function startPresentation() {
     setMenu(false);
@@ -1075,6 +1210,15 @@ export function App() {
             className={menu ? "open" : ""}
             aria-label={t("Main navigation", "التنقّل الرئيسي")}
           >
+            <a href="#problem" onClick={() => setMenu(false)}>
+              {t("The problem", "المشكلة")}
+            </a>
+            <a href="#crescent" onClick={() => setMenu(false)}>
+              {t("See for yourself", "شاهد بنفسك")}
+            </a>
+            <a href="#lighting" onClick={() => setMenu(false)}>
+              {t("Change the light", "غيّر الضوء")}
+            </a>
             <a href="#map" onClick={() => setMenu(false)}>
               {t("Explore", "استكشف")}
             </a>
@@ -1098,16 +1242,6 @@ export function App() {
           </nav>
           <div className="nav-actions">
             <button
-              className="language-button"
-              onClick={() => setAr(!ar)}
-              aria-label={t("Switch to Arabic", "التبديل إلى الإنجليزية")}
-              dir="ltr"
-            >
-              <span className={!ar ? "active" : ""}>EN</span>
-              <span>/</span>
-              <span className={ar ? "active" : ""}>AR</span>
-            </button>
-            <button
               className="present-button"
               aria-label={t("Start presentation", "ابدأ العرض")}
               onClick={startPresentation}
@@ -1126,124 +1260,56 @@ export function App() {
           </div>
         </header>
         <main>
-          <section className="hero story-section" id="hero">
-            <SpaceBackground
-              alt={t(
-                "Cinematic view of Earth's blue horizon and city lights beneath a field of stars",
-                "مشهد سينمائي لأفق الأرض الأزرق وأضواء المدن تحت سماء مليئة بالنجوم",
-              )}
-            />
+          <section id="hero" className="hero pitch-hero story-section" aria-labelledby="pitch-title">
+            <SpaceBackground alt="Illustration of Earth's horizon beneath a starry sky" />
             <div className="hero-shade" />
             <div className="hero-content">
-              <Eyebrow>
-                {t("A CLEARER NIGHT. A BETTER TOMORROW.", "ليل أوضح. غد أفضل.")}
-              </Eyebrow>
-              <h1>
-                {t("See the Night.", "شاهد الليل.")}
-                <br />
-                {t("Protect the Sky.", "احمِ السماء.")}
-              </h1>
-              <p>
-                {t(
-                  "Understand light pollution. Find a better observing site. Explore smarter lighting.",
-                  "افهم التلوث الضوئي. اختر موقع رصد أفضل. واستكشف إنارة أذكى.",
-                )}
-              </p>
+              <Eyebrow>ASTRA / A CLEARER WAY TO SEE THE NIGHT</Eyebrow>
+              <h1 id="pitch-title">The sky is still there.<br /><em>Can we see it?</em></h1>
+              <p>Light pollution is changing what we can see after dark. ASTRA helps people find a better place and moment to look up.</p>
               <div className="hero-actions">
-                <button className="button primary" onClick={() => go("map")}>
-                  {t("Explore the Map", "استكشف الخريطة")}
-                  <ArrowRight size={22} />
-                </button>
-                <button
-                  className="button text-button"
-                  onClick={() => go("problem")}
-                >
-                  {t("See How It Works", "شاهد كيف يعمل")}
-                  <ArrowRight size={21} />
-                </button>
+                <button className="button primary" onClick={() => go("problem")}>Explore the problem <ArrowRight size={20} /></button>
+                <button className="button outline" onClick={() => go("crescent")}>Try ASTRA <ArrowUpRight size={18} /></button>
               </div>
             </div>
-            <div className="hero-bottom">
-              <span>
-                {t(
-                  "ONE PLANET. A SKY WORTH PROTECTING. · SPACE ART",
-                  "كوكب واحد. سماء تستحق الحماية. · مشهد فني",
-                )}
-              </span>
-              <button
-                aria-label={t("Scroll to the story", "انتقل إلى القصة")}
-                onClick={() => go("problem")}
-              >
-                <span>{t("SCROLL TO DISCOVER", "انزل لتكتشف")}</span>
-                <ArrowDown size={17} />
-              </button>
-            </div>
+            <div className="hero-bottom"><span>LIGHT POLLUTION / CRESCENT SIGHTING / ASTRONOMY</span><button onClick={() => go("problem")}>SCROLL TO THE STORY <ArrowRight size={17} /></button></div>
           </section>
-          <div className="tool-strip">
-            {[
-              [
-                MapPin,
-                "Find a better sky",
-                "اختر سماء أفضل",
-                "Explore darker observing locations.",
-                "استكشف مواقع رصد أكثر ظلمة.",
-                "observe",
-              ],
-              [
-                ChartBar,
-                "Trace the light",
-                "تتبّع الضوء",
-                "Understand where skyglow comes from.",
-                "افهم مصادر توهج السماء.",
-                "sources",
-              ],
-              [
-                Leaf,
-                "Test a change",
-                "اختبر التغيير",
-                "Explore the impact of lighting decisions.",
-                "استكشف أثر قرارات الإنارة.",
-                "improve",
-              ],
-            ].map(([Icon, title, titleAr, desc, descAr, id]) => {
-              const Component = Icon as typeof MapPin;
-              return (
-                <button key={id as string} onClick={() => go(id as string)}>
-                  <Component size={34} weight="light" />
-                  <span>
-                    <strong>{t(title as string, titleAr as string)}</strong>
-                    <small>{t(desc as string, descAr as string)}</small>
-                  </span>
-                  <ArrowUpRight className="strip-arrow" size={18} />
-                </button>
-              );
-            })}
-          </div>
           <section id="problem" className="section story-section">
             <div className="container reveal">
               <Heading
-                label={t("01 / SEE THE PROBLEM", "01 / شاهد المشكلة")}
+                label={t("01 / THE PROBLEM", "01 / المشكلة")}
                 title={t(
-                  "Artificial light hides the night sky.",
+                  "We light the ground. We also light the sky.",
                   "الضوء الاصطناعي يحجب سماء الليل.",
                 )}
                 description={t(
-                  "Excessive and poorly directed lighting brightens the sky, hiding stars and faint astronomical objects.",
+                  "Light pollution is artificial light in the wrong place, at the wrong time, or brighter than needed. Light escaping upward and sideways adds skyglow and glare, making the night harder to see.",
                   "الإنارة المفرطة وغير الموجّهة تزيد سطوع السماء، فتحجب النجوم والأجرام الفلكية الخافتة.",
                 )}
               />
-              <Comparison />
-              <div className="comparison-footer">
-                <span>
-                  <SlidersHorizontal size={17} />
-                  {t("Drag to see the difference", "اسحب لمشاهدة الفرق")}
-                </span>
-                <span>
-                  {t(
-                    "Same region. Two historical satellite composites.",
-                    "المنطقة نفسها. صورتان فضائيتان تاريخيتان.",
-                  )}
-                </span>
+              <div className="pitch-impact-grid">
+                <article><span>01 / EVERYDAY LIFE</span><h3>Our shared view fades.</h3><p>The night sky is a public experience, even if you have never owned a telescope.</p></article>
+                <article><span>02 / OBSERVATION</span><h3>Faint details disappear.</h3><p>Skyglow lowers contrast for stars, deep-sky objects and astronomical imaging.</p></article>
+                <article><span>03 / LIGHTING</span><h3>Wasted light has a cost.</h3><p>Light sent above the horizon illuminates neither a path nor a street.</p></article>
+              </div>
+            </div>
+          </section>
+          <section id="impact" className="section regional-section story-section">
+            <div className="container reveal">
+              <Heading label="02 / WHY IT MATTERS HERE" title="A question that returns with every new month." description="Across Muslim communities, the beginning of a Hijri month brings a familiar question: can the young crescent be seen tonight?" />
+              <div className="regional-story">
+                <article className="regional-feature"><span className="regional-index">01 / THE CRESCENT</span><h3>Let people look for themselves.</h3><p>For Ramadan and other Hijri months, a calculated Moon position can help a person choose a place and face the right part of the horizon. Visibility still depends on twilight, weather, the horizon and the observer.</p><a href="https://aa.usno.navy.mil/faq/crescent" target="_blank" rel="noreferrer">Why a sighting cannot be guaranteed <ArrowUpRight size={16} /></a></article>
+                <article className="regional-feature"><span className="regional-index">02 / THE WIDER SKY</span><h3>Give skywatchers a better chance.</h3><p>Astronomy enthusiasts can use the site map and weather forecasts to plan for a clearer view of stars and celestial events.</p></article>
+              </div>
+            </div>
+          </section>
+          <section id="growth" className="section growth-section story-section">
+            <div className="container reveal">
+              <Heading label="03 / THE CHANGING NIGHT" title="As cities expand, the night changes with them." description="Night-light imagery makes the spread and change of artificial lighting visible. Compare the same northern Oman region in two NASA historical composites." />
+              <div className="growth-evidence">
+                <Comparison />
+                <div className="comparison-footer"><span><SlidersHorizontal size={17} /> Drag to compare 2012 and 2016</span><span>NASA VIIRS Black Marble · satellite light, not ground sky brightness</span></div>
+                <p className="growth-context">In a separate global study, 51,351 citizen reports from 2011–2022 were consistent with visible sky brightness rising about 7–10% a year across sampled locations. This is a global finding, not a measured trend for Oman. <a href="https://www.gfz.de/presse/meldungen/detailansicht/citizen-scientists-report-global-rapid-reductions-in-the-visibility-of-stars-from-2011-to-2022" target="_blank" rel="noreferrer">Study summary ↗</a></p>
               </div>
             </div>
           </section>
@@ -1254,39 +1320,39 @@ export function App() {
             <div className="container reveal">
               <Heading
                 label={t(
-                  "02 / UNDERSTAND THE POSSIBILITIES",
+                  "04 / OUR ANSWER",
                   "02 / افهم الإمكانات",
                 )}
                 title={t(
-                  "From light pollution data\nto better decisions.",
+                  "Meet ASTRA.\nFind your own view of the sky.",
                   "من بيانات التلوث الضوئي\nإلى قرارات أفضل.",
                 )}
                 description={t(
-                  "ASTRA brings the night into focus. See what is happening, understand why, and choose what comes next.",
+                  "Tell ASTRA where you are and when you want to look. It compares the pilot sites, then gives you a candidate place, observing time and direction.",
                   "ASTRA يوضّح صورة الليل. شاهد ما يحدث، وافهم السبب، ثم اختر الخطوة التالية.",
                 )}
               />
               <div className="solution-flow">
                 {[
                   [
-                    GlobeHemisphereEast,
-                    "Satellite & environment",
+                    MapPin,
+                    "Start where you are",
                     "الأقمار الصناعية والبيئة",
-                    "Nighttime light, elevation, and sky conditions.",
+                    "Share a location or enter coordinates and choose an evening.",
                     "الضوء الليلي والارتفاع وظروف السماء.",
                   ],
                   [
-                    Broadcast,
-                    "ASTRA analysis",
+                    GlobeHemisphereEast,
+                    "Compare the options",
                     "تحليل ASTRA",
-                    "Bring geography and sky quality together.",
+                    "Check an evening window, available cloud forecast and distance across three Oman sites.",
                     "اربط الجغرافيا بجودة السماء.",
                   ],
                   [
-                    MapPin,
-                    "Better decisions",
+                    Broadcast,
+                    "Look in the right direction",
                     "قرارات أفضل",
-                    "Observing sites, light sources, and lighting scenarios.",
+                    "Get a calculated time, compass bearing and height above a clear horizon.",
                     "مواقع الرصد ومصادر الضوء وسيناريوهات الإنارة.",
                   ],
                 ].map(([Icon, name, nameAr, desc, descAr], i) => {
@@ -1303,21 +1369,33 @@ export function App() {
                 })}
               </div>
               <div className="story-verbs">
-                <span>{t("SEE", "شاهد")}</span>
+                <span>{t("LOCATE", "شاهد")}</span>
                 <ArrowRight />
-                <span>{t("UNDERSTAND", "افهم")}</span>
+                <span>{t("COMPARE", "افهم")}</span>
                 <ArrowRight />
-                <span>{t("DECIDE", "قرّر")}</span>
+                <span>{t("AIM", "قرّر")}</span>
                 <ArrowRight />
-                <span>{t("IMPROVE", "حسّن")}</span>
+                <span>{t("OBSERVE", "حسّن")}</span>
               </div>
             </div>
           </section>
+          <CrescentFinder ar={ar} onSelect={setSelected} onMap={() => go("map")} />
+          <LampHero ar={ar} onNext={() => go("map")} />
+          <div className="tool-strip">
+            {[
+              [MapPin, "Explore the pilot map", "اختر سماء أفضل", "See the three Oman observing sites.", "استكشف مواقع رصد أكثر ظلمة.", "map"],
+              [ChartBar, "Trace the light", "تتبّع الضوء", "Inspect the evidence behind the map.", "افهم مصادر توهج السماء.", "sources"],
+              [Leaf, "Test a change", "اختبر التغيير", "Calculate what dimming does to fixture power.", "استكشف أثر قرارات الإنارة.", "improve"],
+            ].map(([Icon, title, titleAr, desc, descAr, id]) => {
+              const Component = Icon as typeof MapPin;
+              return <button key={id as string} onClick={() => go(id as string)}><Component size={34} weight="light" /><span><strong>{t(title as string, titleAr as string)}</strong><small>{t(desc as string, descAr as string)}</small></span><ArrowUpRight className="strip-arrow" size={18} /></button>;
+            })}
+          </div>
           <section id="map" className="section map-section story-section">
             <div className="container reveal">
               <div className="heading-with-action">
                 <Heading
-                  label={t("03 / EXPLORE THE NIGHT", "03 / استكشف الليل")}
+                  label={t("07 / EXPLORE THE EVIDENCE", "03 / استكشف الليل")}
                   title={t("Explore the Night", "استكشف الليل")}
                   description={t(
                     "Start in Muscat. Follow the light, then look beyond it.",
@@ -1574,19 +1652,17 @@ export function App() {
             <img src={darkImage} alt="" loading="lazy" />
             <div className="final-shade" />
             <div className="container">
-              <Eyebrow>
-                {t("THE NIGHT IS WORTH PROTECTING", "الليل يستحق الحماية")}
-              </Eyebrow>
+              <Eyebrow>{t("TAKE THE SKY BACK", "الليل يستحق الحماية")}</Eyebrow>
               <h2>
-                {t("See the problem.", "شاهد المشكلة.")}
+                {t("Know where to go.", "شاهد المشكلة.")}
                 <br />
-                {t("Choose a better sky.", "اختر سماء أفضل.")}
+                {t("Know when to look.", "اختر سماء أفضل.")}
                 <br />
-                <span>{t("Test a solution.", "اختبر الحل.")}</span>
+                <span>{t("See for yourself.", "اختبر الحل.")}</span>
               </h2>
-              <p>{t("Measure. Decide. Protect.", "قِس. قرّر. احمِ.")}</p>
-              <button className="button primary" onClick={() => setDemo(true)}>
-                {t("Explore ASTRA", "استكشف ASTRA")}
+              <p>{t("A clearer night starts with a better decision.", "قِس. قرّر. احمِ.")}</p>
+              <button className="button primary" onClick={() => go("crescent")}>
+                {t("Plan your observation", "استكشف ASTRA")}
                 <ArrowRight size={21} />
               </button>
             </div>
